@@ -1,0 +1,44 @@
+# Python bytecode files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Virtual environment
+venv/
+env/
+ENV/
+venv.bak/
+env.bak/
+
+# Django media files
+media/
+
+# Django static files (if using the default settings)
+static/
+
+# SQLite database file (if using SQLite as the database)
+db.sqlite3
+
+# Django migrations - Ignore all migration files but not the __init__.py
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# IDE files
+.vscode/
+.idea/
+
+# PyCharm specific
+
+
+# macOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
