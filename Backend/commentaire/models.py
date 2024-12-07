@@ -6,6 +6,6 @@ class Commentaire(models.Model):
     utilisateur = models.ForeignKey('utilisateur.Utilisateur', on_delete=models.CASCADE, related_name='commentaires')
     livre = models.ForeignKey('livre.Livre', on_delete=models.CASCADE, related_name='commentaires')
     note = models.IntegerField()
-
+    # test
     class Meta:
         db_table = 'commentaire'
