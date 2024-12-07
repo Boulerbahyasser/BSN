@@ -26,6 +26,6 @@ class Facture(models.Model):
     montant = models.DecimalField(max_digits=10, decimal_places=2)
     montant_amende = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     date_creation = models.DateTimeField(auto_now_add=True)
-
+    path_facture_pdf =  models.CharField()
     class Meta:
         db_table = 'facture'

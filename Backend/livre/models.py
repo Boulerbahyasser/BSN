@@ -25,8 +25,8 @@ class LivrePhysique(Livre):  # Inherits from Livre
         db_table = 'livrePhysique'
 
 
-class LivreNumerique(Livre):  # Inherits from Livre
-    path_livre_pdf = models.URLField()
+class LivreNumerique(Livre):
+    path_livre_pdf = models.CharField()
     prix_vente = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
