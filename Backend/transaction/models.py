@@ -18,8 +18,8 @@ class Transaction(models.Model):
         db_table = 'transaction'
 
 class TransactionEmprunt(Transaction):
-    dateRetour = models.DateTimeField()
-    dateRetourPrevue = models.DateTimeField()
+    dateRetour = models.DateField()
+    dateRetourPrevue = models.DateField()
     class Meta:
         db_table = 'transactionEmprunt'
 
