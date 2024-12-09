@@ -177,17 +177,17 @@ INSERT INTO "transactionEmprunt" ("transaction_ptr_id", "dateRetour", "dateRetou
 (10, NOW(), NOW() + INTERVAL '7 days');
 
 
-INSERT INTO "facture" (transaction_id, montant, montant_amende, date_creation) VALUES
-(1, 20.00, 0.00, NOW()),
-(2, 25.00, 0.00, NOW()),
-(3, 5.00, 0.00, NOW()),
-(4, 15.00, 0.00, NOW()),
-(5, 2.00, 1.00, NOW()),
-(6, 30.00, 0.00, NOW()),
-(7, 3.00, 0.00, NOW()),
-(8, 10.00, 0.00, NOW()),
-(9, 2.50, 0.00, NOW()),
-(10, 12.00, 0.00, NOW());
+INSERT INTO "facture" (transaction_id, montant, montant_amende, date_creation,path_facture_pdf) VALUES
+(1, 20.00, 0.00, NOW(),''),
+(2, 25.00, 0.00, NOW(),''),
+(3, 5.00, 0.00, NOW(),''),
+(4, 15.00, 0.00, NOW(),''),
+(5, 2.00, 1.00, NOW(),''),
+(6, 30.00, 0.00, NOW(),''),
+(7, 3.00, 0.00, NOW(),''),
+(8, 10.00, 0.00, NOW(),''),
+(9, 2.50, 0.00, NOW(),''),
+(10, 12.00, 0.00, NOW(),'');
 
 INSERT INTO demande (utilisateur_id, livre_id, date_demande) VALUES
 (1, 1, '2024-12-01 10:00:00'),
