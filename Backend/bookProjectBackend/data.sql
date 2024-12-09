@@ -151,17 +151,18 @@ INSERT INTO "notification" (utilisateur_id, contenu, type, date_envoi) VALUES
 (10, 'Your book has been successfully rented.', 'transaction', NOW());
 
 
-INSERT INTO "transaction" (utilisateur_id, livre_id, type, date, montant) VALUES
-(1, 1, 'achat', NOW(), 20.00),
-(2, 2, 'achat', NOW(), 25.00),
-(3, 3, 'emprunt', NOW(), 5.00),
-(4, 4, 'achat', NOW(), 15.00),
-(5, 5, 'emprunt', NOW(), 2.00),
-(6, 6, 'achat', NOW(), 30.00),
-(7, 7, 'emprunt', NOW(), 3.00),
-(8, 8, 'achat', NOW(), 10.00),
-(9, 9, 'emprunt', NOW(), 2.50),
-(10, 10, 'achat', NOW(), 12.00);
+INSERT INTO "transaction" (utilisateur_id, livre_id, type, date, montant, type_livre) VALUES
+(1, 1, 'achat', NOW(), 20.00, 'physique'),
+(2, 2, 'achat', NOW(), 25.00, 'numerique'),
+(3, 3, 'emprunt', NOW(), 5.00, 'physique'),
+(4, 4, 'achat', NOW(), 15.00, 'numerique'),
+(5, 5, 'emprunt', NOW(), 2.00, 'physique'),
+(6, 6, 'achat', NOW(), 30.00, 'numerique'),
+(7, 7, 'emprunt', NOW(), 3.00, 'physique'),
+(8, 8, 'achat', NOW(), 10.00, 'numerique'),
+(9, 9, 'emprunt', NOW(), 2.50, 'physique'),
+(10, 10, 'achat', NOW(), 12.00, 'numerique');
+
 
 
 INSERT INTO "transactionEmprunt" ("transaction_ptr_id", "dateRetour", "dateRetourPrevue") VALUES
