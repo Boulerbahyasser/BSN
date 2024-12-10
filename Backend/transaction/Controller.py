@@ -25,6 +25,14 @@ def show_all_borrowing_transactions_of_user(request):
         TransactionEmprunt.serialize_to_json(transactions),
         safe=False, status=200
     )
+def show_all_buying_transactions_of_user(request):
+    # user_id = request.user.id
+    user_id = 2
+    transactions = Transaction.objects.filter(utilisateur_id=user_id,type='achat')
+    return JsonResponse(
+        Transaction.serialize_to_json(transactions),
+        safe=False, status=200
+    )
 def buy_physical_book(request, book_id):
     # user_id = request.user.id
     user_id = 1
