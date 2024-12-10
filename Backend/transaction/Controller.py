@@ -2,7 +2,7 @@ import os
 
 
 from django.http import JsonResponse
-from django.core import serializers
+
 from xhtml2pdf import pisa
 from datetime import datetime, timedelta
 from livre.models import Livre, LivrePhysique, LivreNumerique
@@ -10,32 +10,32 @@ from transaction.models import Transaction, Facture, TransactionEmprunt
 from utilisateur.models import Utilisateur
 
 def show_all_transactions_of_user(request):
-    # user_id = request.user.id
-    user_id = 2
+    user_id = request.user.id
+    # user_id = 2
     transactions = Transaction.objects.filter(utilisateur_id=user_id)
     return JsonResponse(
         Transaction.serialize_to_json(transactions),
         safe=False,status=200
     )
 def show_all_borrowing_transactions_of_user(request):
-    # user_id = request.user.id
-    user_id = 2
+    user_id = request.user.id
+    # user_id = 2
     transactions = TransactionEmprunt.objects.filter(utilisateur_id=user_id)
     return JsonResponse(
         TransactionEmprunt.serialize_to_json(transactions),
         safe=False, status=200
     )
 def show_all_buying_transactions_of_user(request):
-    # user_id = request.user.id
-    user_id = 2
+    user_id = request.user.id
+    # user_id = 2
     transactions = Transaction.objects.filter(utilisateur_id=user_id,type='achat')
     return JsonResponse(
         Transaction.serialize_to_json(transactions),
         safe=False, status=200
     )
 def buy_physical_book(request, book_id):
-    # user_id = request.user.id
-    user_id = 1
+    user_id = request.user.id
+    # user_id = 1
     user = Utilisateur.objects.get(id=user_id)
     book = LivrePhysique.objects.get(livre_ptr_id=book_id)
     if book.stock_vente != book.vendus:
@@ -47,8 +47,8 @@ def buy_physical_book(request, book_id):
     else:
         return JsonResponse({'message': 'Book is out of stock'}, status=400)
 def buy_numeric_book(request, book_id):
-    # user_id = request.user.id
-    user_id = 1
+    user_id = request.user.id
+    # user_id = 1
     user = Utilisateur.objects.get(id=user_id)
     book = LivreNumerique.objects.get(livre_ptr_id=book_id)
     transaction = Transaction.objects.create(utilisateur_id=user_id,type_livre='numerique',livre_id = book_id,type = 'achat',montant = book.prix_vente)
@@ -57,8 +57,8 @@ def buy_numeric_book(request, book_id):
 
 def borrow_book(request, book_id,days):
 
-    # user_id = request.user.id
-    user_id = 2
+    user_id = request.user.id
+    # user_id = 2
     user = Utilisateur.objects.get(id=user_id)
     book = LivrePhysique.objects.get(livre_ptr_id=book_id)
     count = (
@@ -87,8 +87,8 @@ def borrow_book(request, book_id,days):
         return JsonResponse({'message': 'You can barrow only 3 books in one row'}, status=400)
 
 def return_book(request, book_id):
-    # user_id = request.user.id
-    user_id = 2
+    user_id = request.user.id
+    # user_id = 2
     user = Utilisateur.objects.get(id=user_id)
     transaction = TransactionEmprunt.objects.filter(utilisateur_id=user_id,livre_id=book_id, dateRetour=None).first()
     if transaction is None:
