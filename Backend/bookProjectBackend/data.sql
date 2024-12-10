@@ -40,16 +40,16 @@ INSERT INTO "livre" (titre, couverture_path, auteur, est_disponible) VALUES
 
 
 INSERT INTO "livrePhysique" (livre_ptr_id, dimensions, poids, stock_vente, stock_emprunt, prix_vente, prix_emprunt_par_jour, taux_amende, vendus, empruntes) VALUES
-(1, '10x20x5 cm', 1.2, 5, 2, 20.00, 2.00, 1.00, 0, 0),
-(2, '15x25x8 cm', 1.5, 4, 1, 25.00, 2.50, 1.50, 0, 0),
-(3, '12x18x6 cm', 1.0, 7, 3, 15.00, 1.50, 1.00, 0, 0),
-(4, '14x22x7 cm', 1.3, 8, 4, 18.00, 2.00, 1.20, 0, 0),
-(5, '11x21x5 cm', 1.1, 6, 2, 22.00, 2.00, 1.10, 0, 0),
-(6, '13x23x7 cm', 1.4, 5, 3, 21.00, 1.80, 1.00, 0, 0),
-(7, '16x24x8 cm', 1.6, 9, 4, 30.00, 3.00, 1.50, 0, 0),
-(8, '10x20x5 cm', 1.2, 10, 5, 25.00, 2.50, 1.20, 0, 0),
-(9, '12x22x6 cm', 1.1, 3, 2, 17.00, 1.50, 1.00, 0, 0),
-(10, '15x28x7 cm', 1.8, 4, 1, 20.00, 2.20, 1.10, 0, 0);
+(1, '10x20x5 cm', 1.2, 5, 2, 20.00, 2.00, 0.5, 0, 0),
+(2, '15x25x8 cm', 1.5, 4, 1, 25.00, 2.50, 0.2, 0, 0),
+(3, '12x18x6 cm', 1.0, 7, 3, 15.00, 1.50, 0.25, 0, 0),
+(4, '14x22x7 cm', 1.3, 8, 4, 18.00, 2.00, 0.10, 0, 0),
+(5, '11x21x5 cm', 1.1, 6, 2, 22.00, 2.00, 0.60, 0, 0),
+(6, '13x23x7 cm', 1.4, 5, 3, 21.00, 1.80, 0.15, 0, 0),
+(7, '16x24x8 cm', 1.6, 9, 4, 30.00, 3.00, 0.30, 0, 0),
+(8, '10x20x5 cm', 1.2, 10, 5, 25.00, 2.50, 0.25, 0, 0),
+(9, '12x22x6 cm', 1.1, 3, 2, 17.00, 1.50, 0.10, 0, 0),
+(10, '15x28x7 cm', 1.8, 4, 1, 20.00, 2.20, 0.10, 0, 0);
 
 
 INSERT INTO "livreNumerique" (livre_ptr_id,path_livre_pdf, prix_vente) VALUES
@@ -138,17 +138,18 @@ INSERT INTO "favoris" (utilisateur_id, livre_id, date_ajout) VALUES
 (10, 10, NOW());
 
 
-INSERT INTO "notification" (utilisateur_id, contenu, type, date_envoi) VALUES
-(1, 'You have a new book recommendation!', 'book', NOW()),
-(2, 'Your favorite book is now available.', 'book', NOW()),
-(3, 'A new book has been added to your reading list.', 'book', NOW()),
-(4, 'Dont forget to check out our latest books.', 'book', NOW()),
-(5, 'Your requested book is now in stock.', 'book', NOW()),
-(6, 'A book from your wishlist is on sale.', 'book', NOW()),
-(7, 'New books in your favorite category.', 'book', NOW()),
-(8, 'Your recommended book is now available for download.', 'book', NOW()),
-(9, 'Reminder: Your borrowed book is due soon.', 'reminder', NOW()),
-(10, 'Your book has been successfully rented.', 'transaction', NOW());
+INSERT INTO "notification" (utilisateur_id, contenu, type, date_envoi, attachement) VALUES
+(1, 'You have a new book recommendation!', 'book', NOW(), NULL),
+(2, 'Your favorite book is now available.', 'book', NOW(), NULL),
+(3, 'A new book has been added to your reading list.', 'book', NOW(), NULL),
+(4, 'Dont forget to check out our latest books.', 'book', NOW(), NULL),
+(5, 'Your requested book is now in stock.', 'book', NOW(), NULL),
+(6, 'A book from your wishlist is on sale.', 'book', NOW(), NULL),
+(7, 'New books in your favorite category.', 'book', NOW(), NULL),
+(8, 'Your recommended book is now available for download.', 'book', NOW(), NULL),
+(9, 'Reminder: Your borrowed book is due soon.', 'reminder', NOW(), NULL),
+(10, 'Your book has been successfully rented.', 'transaction', NOW(), NULL);
+
 
 
 INSERT INTO "transaction" (utilisateur_id, livre_id, type, date, montant, type_livre) VALUES
@@ -203,4 +204,3 @@ INSERT INTO demande (utilisateur_id, livre_id, date_demande) VALUES
 (10, 10, '2024-12-10 19:00:00');
 
 
--- Insert into Utilisateur (10 users with hashed passwords)
