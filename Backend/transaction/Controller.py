@@ -9,7 +9,7 @@ from livre.models import Livre, LivrePhysique, LivreNumerique
 from transaction.models import Transaction, Facture, TransactionEmprunt
 from utilisateur.models import Utilisateur
 
-def show_all_transaction_of_user(request):
+def show_all_transactions_of_user(request):
     # user_id = request.user.id
     user_id = 2
     transactions = Transaction.objects.filter(utilisateur_id=user_id)
@@ -17,8 +17,14 @@ def show_all_transaction_of_user(request):
         Transaction.serialize_to_json(transactions),
         safe=False,status=200
     )
-
-
+def show_all_borrowing_transactions_of_user(request):
+    # user_id = request.user.id
+    user_id = 2
+    transactions = TransactionEmprunt.objects.filter(utilisateur_id=user_id)
+    return JsonResponse(
+        TransactionEmprunt.serialize_to_json(transactions),
+        safe=False, status=200
+    )
 def buy_physical_book(request, book_id):
     # user_id = request.user.id
     user_id = 1
