@@ -1,4 +1,3 @@
-# rating/models.py
 from django.db import models
 
 class Rating(models.Model):
@@ -10,3 +9,17 @@ class Rating(models.Model):
 
     class Meta:
         db_table = 'rating'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'utilisateur_id': self.utilisateur.id,
+            'livre_id': self.livre.id,
+            'note': self.note,
+            'commentaire': self.commentaire,
+            'date_creation': self.date_creation.strftime('%Y-%m-%d %H:%M:%S')
+        }
+
+    @classmethod
+    def serialize_to_json(cls, query):
+        return [rating.to_dict() for rating in query]

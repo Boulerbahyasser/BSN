@@ -8,3 +8,15 @@ class Favoris(models.Model):
 
     class Meta:
         db_table = 'favoris'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'utilisateur_id': self.utilisateur.id,
+            'livre_id': self.livre.id,
+            'date_ajout': self.date_ajout.strftime('%Y-%m-%d %H:%M:%S'),
+        }
+
+    @classmethod
+    def serialize_to_json(cls, query):
+        return [favoris.to_dict() for favoris in query]

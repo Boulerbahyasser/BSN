@@ -1,37 +1,108 @@
 import os
 
+
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.core import serializers
 from xhtml2pdf import pisa
-from datetime import datetime
-from livre.models import Livre, LivrePhysique
-from transaction.models import Transaction, Facture
+from datetime import datetime, timedelta
+from livre.models import Livre, LivrePhysique, LivreNumerique
+from transaction.models import Transaction, Facture, TransactionEmprunt
 from utilisateur.models import Utilisateur
+
+def show_all_transaction_of_user(request):
+    # user_id = request.user.id
+    user_id = 2
+    transactions = Transaction.objects.filter(utilisateur_id=user_id)
+    return JsonResponse(
+        Transaction.serialize_to_json(transactions),
+        safe=False,status=200
+    )
 
 
 def buy_physical_book(request, book_id):
-
+    # user_id = request.user.id
     user_id = 1
     user = Utilisateur.objects.get(id=user_id)
     book = LivrePhysique.objects.get(livre_ptr_id=book_id)
     if book.stock_vente != book.vendus:
-        transaction = Transaction.objects.create(utilisateur_id=user_id,livre_id = book_id,type = 'achat',montant = book.prix_vente)
+        transaction = Transaction.objects.create(utilisateur_id=user_id,livre_id = book_id,type_livre='physique',type = 'achat',montant = book.prix_vente)
         book.vendus+=1
         book.save()
-        generate_facture(book, transaction, user)
-        return JsonResponse({'message': 'Transaction is done'}, status=201)
+        pdf_facture_path = generate_facture(book, transaction, user,'Physique')
+        return JsonResponse({"facture": pdf_facture_path}, status=201)
     else:
         return JsonResponse({'message': 'Book is out of stock'}, status=400)
+def buy_numeric_book(request, book_id):
+    # user_id = request.user.id
+    user_id = 1
+    user = Utilisateur.objects.get(id=user_id)
+    book = LivreNumerique.objects.get(livre_ptr_id=book_id)
+    transaction = Transaction.objects.create(utilisateur_id=user_id,type_livre='numerique',livre_id = book_id,type = 'achat',montant = book.prix_vente)
+    pdf_facture_path = generate_facture(book, transaction, user,'Numerique')
+    return JsonResponse({'livre':book.path_livre_pdf,"facture": pdf_facture_path}, status=201)
+
+def borrow_book(request, book_id,days):
+
+    # user_id = request.user.id
+    user_id = 2
+    user = Utilisateur.objects.get(id=user_id)
+    book = LivrePhysique.objects.get(livre_ptr_id=book_id)
+    count = (
+        TransactionEmprunt.objects.filter(
+            utilisateur_id=user_id,
+            dateRetour__isnull=True
+        )
+        .count()
+    )
+    # transaction = TransactionEmprunt.objects.filter(utilisateur_id=user_id, livre_id=book_id, dateRetour=None).first()
+    # if transaction:
+    #     return JsonResponse({'message': 'You cannot borrow the same book until you return the first one.'}, status=400)
+
+    if count<3:
+        if book.stock_emprunt != book.empruntes:
+            date_retour_prevu =  datetime.now().date() + timedelta(days=days)
+            transaction = TransactionEmprunt.objects.create(utilisateur_id=user_id, livre_id=book_id, type_livre='physique',
+                                                     type='emprunt', montant=book.prix_vente,dateRetourPrevue=date_retour_prevu,dateRetour=None)
+            book.empruntes += 1
+            book.save()
+            pdf_facture_path = generate_facture(book, transaction, user, 'Physique',date_retour_prevu)
+            return JsonResponse({"facture": pdf_facture_path}, status=201)
+        else:
+            return JsonResponse({'message': 'Book is out of stock'}, status=400)
+    else:
+        return JsonResponse({'message': 'You can barrow only 3 books in one row'}, status=400)
+
+def return_book(request, book_id):
+    # user_id = request.user.id
+    user_id = 2
+    user = Utilisateur.objects.get(id=user_id)
+    transaction = TransactionEmprunt.objects.filter(utilisateur_id=user_id,livre_id=book_id, dateRetour=None).first()
+    if transaction is None:
+        return JsonResponse({'message': 'Transaction is closed or no transaction concern this book'}, status=400)
+    now = datetime.now().date()
+    transaction.dateRetour = now
+    transaction.save()
+    if now > transaction.dateRetourPrevue:
+        livre_taux_amende = LivrePhysique.objects.get(livre_ptr_id=book_id).taux_amende
+        book = LivrePhysique.objects.get(livre_ptr_id=book_id)
+        book_price = book.prix_vente
+        days_late = (now-transaction.dateRetourPrevue).days
+        amende = book_price*livre_taux_amende*days_late
+        fine_pdf = generate_fine_pdf(f'{user.first_name} {user.last_name}',
+                                     book.titre,transaction.dateRetour,transaction.dateRetourPrevue,amende)
+        return JsonResponse({'fine_pdf': fine_pdf}, status=200)
+    else:
+        return JsonResponse({'message': 'The book has been returned successfully'}, status=200)
 
 
-
-def generate_facture(book,transaction,user):
+def generate_facture(book,transaction,user,type_livre,date_retour=None):
     facture = Facture.objects.create(montant=book.prix_vente, transaction_id=transaction.id)
     pdf_facture_path =generate_facture_pdf(facture.id,
                                            f'{user.first_name} {user.last_name}',
-                                           transaction.type,transaction.montant,book.titre)
+                                           transaction.type,transaction.montant,book.titre,type_livre,date_retour)
     facture.path_facture_pdf=pdf_facture_path
     facture.save()
+    return pdf_facture_path
 
 
 
@@ -39,13 +110,13 @@ def generate_facture(book,transaction,user):
 
 
 
-def generate_facture_pdf(facture_id, nom_client, type_transaction, montant, nom_livre):
+def generate_facture_pdf(facture_id, nom_client, type_transaction, montant, nom_livre,type_livre,date_retour=None):
 
     pdf_directory = os.path.join("media", "factures")
-    os.makedirs(pdf_directory, exist_ok=True)  # Ensure the directory exists
+    os.makedirs(pdf_directory, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    pdf_filename = f"facture_{facture_id}_{nom_client}_{timestamp}.pdf"
+    pdf_filename = f"facture_{facture_id}_{nom_client.replace(" ", "_")}_{timestamp}.pdf"
     pdf_path = os.path.join(pdf_directory, pdf_filename)
 
     html_content = f"""
@@ -78,7 +149,7 @@ def generate_facture_pdf(facture_id, nom_client, type_transaction, montant, nom_
             h2 {{
                 color: #003366;
                 font-size: 20px;
-                margin-top: 30px;
+                margin-top: 20px;
                 font-weight: bold;
                 border-bottom: 2px solid #003366;
                 padding-bottom: 8px;
@@ -139,6 +210,17 @@ def generate_facture_pdf(facture_id, nom_client, type_transaction, montant, nom_
                 color: #003366;
                 font-weight: bold;
             }}
+            .warning {{
+                margin-top: 30px;
+                color: #D32F2F;
+                font-size: 14px;
+                font-weight: bold;
+                text-align: center;
+                padding: 10px;
+                border: 1px solid #D32F2F;
+                border-radius: 5px;
+                background-color: #FFF5F5;
+            }}
         </style>
     </head>
     <body>
@@ -155,12 +237,16 @@ def generate_facture_pdf(facture_id, nom_client, type_transaction, montant, nom_
                 <p><strong>Type de transaction :</strong> {type_transaction.capitalize()}</p>
                 <p><strong>Montant :</strong> {montant} €</p>
                 <p><strong>Nom du livre :</strong> {nom_livre}</p>
+                <p><strong>Type du livre :</strong> {type_livre}</p>
+                {f"<p><strong>Date limite de retour du livre :</strong> {date_retour}</p>" if date_retour else ""}
             </div>
 
             <div class="transaction">
                 <p><strong>Transaction ID:</strong> {facture_id}</p>
-                <p><strong>Date de la transaction:</strong> {datetime.now().strftime('%d %B %Y')}</p>
             </div>
+            {f"""<div class="warning">
+                <p><strong>Attention :</strong> En cas de non-respect de la date limite de retour, une amende sera appliquée.</p>
+            </div>""" if date_retour else ""}
 
             <div class="footer">
                 <p>Merci pour votre confiance.</p>
@@ -171,9 +257,115 @@ def generate_facture_pdf(facture_id, nom_client, type_transaction, montant, nom_
     </html>
     """
 
-
     with open(pdf_path, "w+b") as pdf_file:
         pisa.CreatePDF(html_content, dest=pdf_file)
 
-
     return f"/media/factures/{pdf_filename}"
+
+
+def generate_fine_pdf(nom_client, nom_livre, dateRetour, dateRetourPrevu, amende):
+    pdf_directory = os.path.join("media", "amendes")
+    os.makedirs(pdf_directory, exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    pdf_filename = f"fine_{nom_client.replace(' ', '_')}_{timestamp}.pdf"
+    pdf_path = os.path.join(pdf_directory, pdf_filename)
+
+    # HTML content with styling
+    html_content = f"""
+    <html>
+    <head>
+        <style>
+            body {{
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+                color: #333;
+                background-color: #f7f9fc;
+            }}
+             .header {{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+            }}
+            .header p {{
+                margin: 5px 0;
+            }}
+            .logo {{
+                font-size: 22px;
+                font-weight: bold;
+                color: #003366;
+            }}
+            .container {{
+                width: 80%;
+                max-width: 800px;
+                margin: 30px auto;
+                padding: 20px;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }}
+            h1 {{
+                color: #D32F2F;
+                text-align: center;
+                font-size: 28px;
+                margin-bottom: 20px;
+            }}
+            .details {{
+                font-size: 16px;
+                margin-bottom: 20px;
+                line-height: 1.6;
+            }}
+            .details p {{
+                margin: 10px 0;
+            }}
+            .details strong {{
+                color: #003366;
+            }}
+            .amount {{
+                font-size: 18px;
+                font-weight: bold;
+                color: #D32F2F;
+                text-align: center;
+                margin: 20px 0;
+            }}
+            .footer {{
+                margin-top: 20px;
+                font-size: 14px;
+                text-align: center;
+                color: #555;
+                border-top: 1px solid #eee;
+                padding-top: 10px;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="header">
+                <div class="logo">Book Social Network</div>
+            </div>
+        <div class="container">
+            <h1>Facture d'Amende</h1>
+            <div class="details">
+                <p><strong>Nom du Client :</strong> {nom_client}</p>
+                <p><strong>Nom du Livre :</strong> {nom_livre}</p>
+                <p><strong>Date de Retour :</strong> {dateRetour.strftime('%d %B %Y')}</p>
+                <p><strong>Date de Retour Prévue :</strong> {dateRetourPrevu.strftime('%d %B %Y')}</p>
+            </div>
+            <div class="amount">
+                <p>Montant de l'Amende : <strong>{amende:.2f} €</strong></p>
+            </div>
+            <div class="footer">
+                <p>Merci de bien vouloir régler cette amende.</p>
+                <p>Facture générée par BSN.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    # Generate the PDF
+    with open(pdf_path, "w+b") as pdf_file:
+        pisa.CreatePDF(html_content, dest=pdf_file)
+
+    return f"/media/amendes/{pdf_filename}"
+
+
