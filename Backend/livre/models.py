@@ -6,7 +6,7 @@ class Livre(models.Model):
     couverture_path = models.CharField(max_length=255, null=True, blank=True)  # Store path as a string
     auteur = models.CharField(max_length=100)
     est_disponible = models.BooleanField(default=True)
-
+    utilisateur = models.ForeignKey('utilisateur.Utilisateur', on_delete=models.CASCADE, related_name='livres')
     class Meta:
         db_table = 'livre'
 
