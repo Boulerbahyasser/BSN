@@ -26,17 +26,17 @@ INSERT INTO "Utilisateur" (username, first_name, last_name, email, description, 
 ('user10', 'Oscar', 'Red', 'user10@gamil.com', 'Book reviewer', null, '0123456798', '404 Birch St', 'pbkdf2_sha256$870000$s4Hp63PZzZq1BXu3A3WKxJ$eZl0vyPbRtzQookczoM3q3l8FD0ZnSBwgN0NfZeJgrs=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00');
 
 -- Insert into Livre (10 general books)
-INSERT INTO "livre" (titre, couverture_path, auteur, est_disponible) VALUES
-('Book 1', null, 'Author 1', true),
-('Book 2', null, 'Author 2', true),
-('Book 3', null, 'Author 3', true),
-('Book 4', null, 'Author 4', true),
-('Book 5', null, 'Author 5', true),
-('Book 6', null, 'Author 6', true),
-('Book 7', null, 'Author 7', true),
-('Book 8', null, 'Author 8', true),
-('Book 9', null, 'Author 9', true),
-('Book 10', null, 'Author 10', true);
+INSERT INTO "livre" (titre, couverture_path, auteur, est_disponible, utilisateur_id) VALUES
+('Book 1', null, 'Author 1', true, 1),
+('Book 2', null, 'Author 2', true, 1),
+('Book 3', null, 'Author 3', true, 1),
+('Book 4', null, 'Author 4', true, 1),
+('Book 5', null, 'Author 5', true, 1),
+('Book 6', null, 'Author 6', true, 1),
+('Book 7', null, 'Author 7', true, 1),
+('Book 8', null, 'Author 8', true, 1),
+('Book 9', null, 'Author 9', true, 1),
+('Book 10', null, 'Author 10', true, 1);
 
 
 INSERT INTO "livrePhysique" (livre_ptr_id, dimensions, poids, stock_vente, stock_emprunt, prix_vente, prix_emprunt_par_jour, taux_amende, vendus, empruntes) VALUES
