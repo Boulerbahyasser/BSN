@@ -168,15 +168,15 @@ INSERT INTO "transaction" (utilisateur_id, livre_id, type, date, montant, type_l
 
 INSERT INTO "transactionEmprunt" ("transaction_ptr_id", "dateRetour", "dateRetourPrevue") VALUES
 (1, CURRENT_DATE, CURRENT_DATE + INTERVAL '7 days'),
-(2, CURRENT_DATE, CURRENT_DATE + INTERVAL '7 days'),
+
 (3, CURRENT_DATE, CURRENT_DATE + INTERVAL '7 days'),
-(4, CURRENT_DATE, CURRENT_DATE + INTERVAL '7 days'),
+
 (5, CURRENT_DATE, CURRENT_DATE + INTERVAL '7 days'),
-(6, CURRENT_DATE, CURRENT_DATE + INTERVAL '7 days'),
+
 (7, CURRENT_DATE, CURRENT_DATE + INTERVAL '7 days'),
-(8, CURRENT_DATE, CURRENT_DATE + INTERVAL '7 days'),
-(9, CURRENT_DATE, CURRENT_DATE + INTERVAL '7 days'),
-(10, CURRENT_DATE, CURRENT_DATE + INTERVAL '7 days');
+
+(9, CURRENT_DATE, CURRENT_DATE + INTERVAL '7 days');
+;
 
 
 INSERT INTO "facture" (transaction_id, montant, montant_amende, date_creation,path_facture_pdf) VALUES
