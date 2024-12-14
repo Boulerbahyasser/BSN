@@ -1,14 +1,20 @@
 # livre/models.py
 from django.db import models
 
+
 class Livre(models.Model):
     titre = models.CharField(max_length=200)
     couverture_path = models.CharField(max_length=255, null=True, blank=True)  # Store path as a string
     auteur = models.CharField(max_length=100)
     est_disponible = models.BooleanField(default=True)
     utilisateur = models.ForeignKey('utilisateur.Utilisateur', on_delete=models.CASCADE, related_name='livres')
+
     class Meta:
         db_table = 'livre'
+
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in Livre._meta.fields]
 
     def to_dict(self):
         return {
@@ -38,6 +44,10 @@ class LivrePhysique(Livre):  # Inherits from Livre
     class Meta:
         db_table = 'livrePhysique'
 
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in LivrePhysique._meta.fields]
+
     def to_dict(self):
         base_dict = super().to_dict()  # Get the dictionary from the parent (Livre)
         base_dict.update({
@@ -58,13 +68,16 @@ class LivrePhysique(Livre):  # Inherits from Livre
         return [livre.to_dict() for livre in query]
 
 
-
 class LivreNumerique(Livre):
     path_livre_pdf = models.CharField(max_length=255)
     prix_vente = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
         db_table = 'livreNumerique'
+
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in LivreNumerique._meta.fields]
 
     def to_dict(self):
         base_dict = super().to_dict()  # Get the dictionary from the parent (Livre)
@@ -79,13 +92,15 @@ class LivreNumerique(Livre):
         return [livre.to_dict() for livre in query]
 
 
-
-
 class Category(models.Model):
     nom = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'category'
+
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in Category._meta.fields]
 
     def to_dict(self):
         return {
@@ -98,13 +113,16 @@ class Category(models.Model):
         return [category.to_dict() for category in query]
 
 
-
 class LivreCategory(models.Model):
     livre = models.ForeignKey(Livre, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'livreCategory'
+
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in LivreCategory._meta.fields]
 
     def to_dict(self):
         return {

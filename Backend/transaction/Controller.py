@@ -18,7 +18,7 @@ def show_all_transactions_of_user(request):
         safe=False,status=200
     )
 def show_all_borrowing_transactions_of_user(request):
-    user_id = request.user.id
+    # user_id = request.user.id
     # user_id = 2
     transactions = TransactionEmprunt.objects.filter(utilisateur_id=user_id)
     return JsonResponse(
@@ -34,7 +34,19 @@ def show_all_buying_transactions_of_user(request):
         safe=False, status=200
     )
 
-# def show_all_related_transactions_of_user_books(request):
+def show_all_related_transactions_of_user_books(request):
+    user_id = request.user.id
+    # user_id = 1
+    queryset = Transaction.objects.select_related('livre').filter(
+        livre__utilisateur_id=user_id
+    ).values(*Transaction.get_attributes(), 'livre__titre')
+    return JsonResponse(
+        list(queryset),
+        safe=False,
+        status=200
+    )
+
+
 
 
 def buy_physical_book(request, book_id):

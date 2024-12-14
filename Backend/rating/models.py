@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Rating(models.Model):
     utilisateur = models.ForeignKey('utilisateur.Utilisateur', on_delete=models.CASCADE, related_name='ratings')
     livre = models.ForeignKey('livre.Livre', on_delete=models.CASCADE, related_name='ratings')
@@ -9,6 +10,10 @@ class Rating(models.Model):
 
     class Meta:
         db_table = 'rating'
+
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in Rating._meta.fields]
 
     def to_dict(self):
         return {

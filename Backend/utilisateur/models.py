@@ -6,10 +6,14 @@ class Utilisateur(AbstractUser, PermissionsMixin):
     image = models.CharField(max_length=255, null=True, blank=True)
     telephone = models.CharField(max_length=11, null=True, blank=True)
     adresse = models.CharField(max_length=255, null=True, blank=True)
+    isLinkedToBank = models.BooleanField(default=False)
 
     class Meta:
         db_table = "Utilisateur"  # Rename the database table
 
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in Utilisateur._meta.fields]
     def to_dict(self):
         return {
             'id': self.id,
@@ -26,6 +30,7 @@ class Utilisateur(AbstractUser, PermissionsMixin):
             'image': self.image,
             'telephone': self.telephone,
             'adresse': self.adresse,
+            'islinkedToBank': self.isLinkedToBank
         }
 
     @classmethod
@@ -42,6 +47,9 @@ class Demande(models.Model):
 
     class Meta:
         db_table = 'demande'
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in Demande._meta.fields]
 
     def to_dict(self):
         return {

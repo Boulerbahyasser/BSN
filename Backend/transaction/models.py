@@ -17,6 +17,10 @@ class Transaction(models.Model):
     class Meta:
         db_table = 'transaction'
 
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in Transaction._meta.fields]
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -39,6 +43,10 @@ class TransactionEmprunt(Transaction):
 
     class Meta:
         db_table = 'transactionEmprunt'
+
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in TransactionEmprunt._meta.fields]
 
     def to_dict(self):
         # You can extend the base `to_dict` method if needed
@@ -63,6 +71,10 @@ class Facture(models.Model):
 
     class Meta:
         db_table = 'facture'
+
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in Facture._meta.fields]
 
     def to_dict(self):
         return {

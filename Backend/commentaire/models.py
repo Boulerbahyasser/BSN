@@ -1,6 +1,7 @@
 # commentaire/models.py
 from django.db import models
 
+
 class Commentaire(models.Model):
     contenu = models.TextField()
     utilisateur = models.ForeignKey('utilisateur.Utilisateur', on_delete=models.CASCADE, related_name='commentaires')
@@ -9,6 +10,10 @@ class Commentaire(models.Model):
 
     class Meta:
         db_table = 'commentaire'
+
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in Commentaire._meta.fields]
 
     def to_dict(self):
         return {
