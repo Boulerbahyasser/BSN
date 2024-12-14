@@ -13,17 +13,19 @@ INSERT INTO "category" (nom) VALUES
 
 
 -- Insert into Utilisateur (10 users with all required fields for Django User model)
-INSERT INTO "Utilisateur" (username, first_name, last_name, email, description, image, telephone, adresse, password, is_active, is_staff, is_superuser, last_login, date_joined) VALUES
-('user1', 'John', 'Doe', 'user1@gamil.com', 'A regular user', null, '0123456789', '123 Main St', 'pbkdf2_sha256$870000$AYGQ3BdJbGNQ8Ktp6Cwb7L$lMFZeZlOR5eFbNQPhItAsCK241lMUHWclVjbfzJdyOM=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00'),
-('user2', 'Jane', 'Doe', 'user2@gamil.com', 'Another regular user', null, '0123456790', '456 Side St', 'pbkdf2_sha256$870000$oJpl0GmjsPRx8hzCUf6izj$NuwXehzL+ihEa1H3mJbWdWar8zIrdqUDnQiYrATOHBM=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00'),
-('user3', 'Jim', 'Beam', 'user3@gamil.com', 'Lover of books', null, '0123456791', '789 High St', 'pbkdf2_sha256$870000$1lZK93SqFYeJkYoE1t9bcQ$gLqK/XZJpvwsIkmAQNzczkMOUBK3QvaGWn3faiiPAhM=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00'),
-('user4', 'Jack', 'Daniels', 'user4@gamil.com', 'Book enthusiast', null, '0123456792', '321 Low St', 'pbkdf2_sha256$870000$LB5POzaDP0gkUEJuZXKwfx$sTl5FOJ4T9DAewr2iArEPdr4jdacj6GwPn/GX/pxnFM=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00'),
-('user5', 'Jill', 'Smith', 'user5@gamil.com', 'Reader and reviewer', null, '0123456793', '654 Down St', 'pbkdf2_sha256$870000$Y01IrTO8MFRyHvApoPs3aC$4bEuQR9cuCMm78tVAH5oV4mGLQEiDsWXmROKajYq0Ho=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00'),
-('user6', 'Lucy', 'Green', 'user6@gamil.com', 'Book lover', null, '0123456794', '987 New St', 'pbkdf2_sha256$870000$cMFyo7e08eLTafwvils9MP$18a/AOBzlKFoeBKJStp9Bs3XjXZmNlwxeDvU+L/6HVQ=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00'),
-('user7', 'Maggie', 'White', 'user7@gamil.com', 'Frequent reader', null, '0123456795', '101 Oak St', 'pbkdf2_sha256$870000$V3TzLfgdwsOEn3DulZ9JrO$7PnzR+QJ/RwnNiUH/DFBk2mS1FlWUYs+JWnpPNszxwg=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00'),
-('user8', 'Tom', 'Blue', 'user8@gamil.com', 'Avid bookworm', null, '0123456796', '202 Pine St', 'pbkdf2_sha256$870000$meI6PbKEBPp3H5yb8wv7XD$Ok1P6PObFDG/i6BNOiqLzJRDGLLI5tjZvl5xR73AKNk=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00'),
-('user9', 'Eve', 'Black', 'user9@gamil.com', 'Literature fan', null, '0123456797', '303 Maple St', 'pbkdf2_sha256$870000$JErIorlcb3r8ytlV4XnRpd$oT+OfGSTrUCDrISHGRzvmo794LhFS6l3fHSlIAHptz0=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00'),
-('user10', 'Oscar', 'Red', 'user10@gamil.com', 'Book reviewer', null, '0123456798', '404 Birch St', 'pbkdf2_sha256$870000$s4Hp63PZzZq1BXu3A3WKxJ$eZl0vyPbRtzQookczoM3q3l8FD0ZnSBwgN0NfZeJgrs=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00');
+INSERT INTO "Utilisateur"
+(username, first_name, last_name, email, description, image, telephone, adresse, password, is_active, is_staff, is_superuser, last_login, date_joined, isLinkedToBank)
+VALUES
+('user1', 'John', 'Doe', 'user1@gamil.com', 'A regular user', null, '0123456789', '123 Main St', 'pbkdf2_sha256$870000$AYGQ3BdJbGNQ8Ktp6Cwb7L$lMFZeZlOR5eFbNQPhItAsCK241lMUHWclVjbfzJdyOM=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00', false),
+('user2', 'Jane', 'Doe', 'user2@gamil.com', 'Another regular user', null, '0123456790', '456 Side St', 'pbkdf2_sha256$870000$oJpl0GmjsPRx8hzCUf6izj$NuwXehzL+ihEa1H3mJbWdWar8zIrdqUDnQiYrATOHBM=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00', false),
+('user3', 'Jim', 'Beam', 'user3@gamil.com', 'Lover of books', null, '0123456791', '789 High St', 'pbkdf2_sha256$870000$1lZK93SqFYeJkYoE1t9bcQ$gLqK/XZJpvwsIkmAQNzczkMOUBK3QvaGWn3faiiPAhM=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00', false),
+('user4', 'Jack', 'Daniels', 'user4@gamil.com', 'Book enthusiast', null, '0123456792', '321 Low St', 'pbkdf2_sha256$870000$LB5POzaDP0gkUEJuZXKwfx$sTl5FOJ4T9DAewr2iArEPdr4jdacj6GwPn/GX/pxnFM=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00', false),
+('user5', 'Jill', 'Smith', 'user5@gamil.com', 'Reader and reviewer', null, '0123456793', '654 Down St', 'pbkdf2_sha256$870000$Y01IrTO8MFRyHvApoPs3aC$4bEuQR9cuCMm78tVAH5oV4mGLQEiDsWXmROKajYq0Ho=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00', false),
+('user6', 'Lucy', 'Green', 'user6@gamil.com', 'Book lover', null, '0123456794', '987 New St', 'pbkdf2_sha256$870000$cMFyo7e08eLTafwvils9MP$18a/AOBzlKFoeBKJStp9Bs3XjXZmNlwxeDvU+L/6HVQ=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00', false),
+('user7', 'Maggie', 'White', 'user7@gamil.com', 'Frequent reader', null, '0123456795', '101 Oak St', 'pbkdf2_sha256$870000$V3TzLfgdwsOEn3DulZ9JrO$7PnzR+QJ/RwnNiUH/DFBk2mS1FlWUYs+JWnpPNszxwg=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00', false),
+('user8', 'Tom', 'Blue', 'user8@gamil.com', 'Avid bookworm', null, '0123456796', '202 Pine St', 'pbkdf2_sha256$870000$meI6PbKEBPp3H5yb8wv7XD$Ok1P6PObFDG/i6BNOiqLzJRDGLLI5tjZvl5xR73AKNk=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00', false),
+('user9', 'Eve', 'Black', 'user9@gamil.com', 'Literature fan', null, '0123456797', '303 Maple St', 'pbkdf2_sha256$870000$JErIorlcb3r8ytlV4XnRpd$oT+OfGSTrUCDrISHGRzvmo794LhFS6l3fHSlIAHptz0=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00', false),
+('user10', 'Oscar', 'Red', 'user10@gamil.com', 'Book reviewer', null, '0123456798', '404 Birch St', 'pbkdf2_sha256$870000$s4Hp63PZzZq1BXu3A3WKxJ$eZl0vyPbRtzQookczoM3q3l8FD0ZnSBwgN0NfZeJgrs=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00', false);
 
 -- Insert into Livre (10 general books)
 INSERT INTO "livre" (titre, couverture_path, auteur, est_disponible, utilisateur_id) VALUES

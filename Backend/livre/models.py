@@ -10,6 +10,9 @@ class Livre(models.Model):
     class Meta:
         db_table = 'livre'
 
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in Livre._meta.fields]
     def to_dict(self):
         return {
             'id': self.id,
@@ -37,6 +40,11 @@ class LivrePhysique(Livre):  # Inherits from Livre
 
     class Meta:
         db_table = 'livrePhysique'
+
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in LivrePhysique._meta.fields]
+
 
     def to_dict(self):
         base_dict = super().to_dict()  # Get the dictionary from the parent (Livre)
@@ -66,6 +74,10 @@ class LivreNumerique(Livre):
     class Meta:
         db_table = 'livreNumerique'
 
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in LivreNumerique._meta.fields]
+
     def to_dict(self):
         base_dict = super().to_dict()  # Get the dictionary from the parent (Livre)
         base_dict.update({
@@ -87,6 +99,10 @@ class Category(models.Model):
     class Meta:
         db_table = 'category'
 
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in Category._meta.fields]
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -105,6 +121,11 @@ class LivreCategory(models.Model):
 
     class Meta:
         db_table = 'livreCategory'
+
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in LivreCategory._meta.fields]
+
 
     def to_dict(self):
         return {

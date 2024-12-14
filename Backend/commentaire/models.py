@@ -10,6 +10,10 @@ class Commentaire(models.Model):
     class Meta:
         db_table = 'commentaire'
 
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in Commentaire._meta.fields]
+
     def to_dict(self):
         return {
             'id': self.id,

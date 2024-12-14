@@ -10,6 +10,10 @@ class Rating(models.Model):
     class Meta:
         db_table = 'rating'
 
+    @staticmethod
+    def get_attributes():
+        return [field.name for field in Rating._meta.fields]
+
     def to_dict(self):
         return {
             'id': self.id,
