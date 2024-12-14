@@ -18,7 +18,7 @@ def show_all_transactions_of_user(request):
         safe=False,status=200
     )
 def show_all_borrowing_transactions_of_user(request):
-    # user_id = request.user.id
+    user_id = request.user.id
     # user_id = 2
     transactions = TransactionEmprunt.objects.filter(utilisateur_id=user_id)
     return JsonResponse(
@@ -50,8 +50,8 @@ def show_all_related_transactions_of_user_books(request):
 
 
 def buy_physical_book(request, book_id):
-    # user_id = request.user.id
-    user_id = 3
+    user_id = request.user.id
+    # user_id = 3
     user = Utilisateur.objects.get(id=user_id)
     book = LivrePhysique.objects.get(livre_ptr_id=book_id)
     if book.stock_vente != book.vendus:
@@ -78,8 +78,8 @@ def buy_numeric_book(request, book_id):
     return JsonResponse({'livre':book.path_livre_pdf,"facture": pdf_facture_path}, status=201)
 
 def borrow_book(request, book_id,days):
-    # user_id = request.user.id
-    user_id = 2
+    user_id = request.user.id
+    # user_id = 2
     user = Utilisateur.objects.get(id=user_id)
     book = LivrePhysique.objects.get(livre_ptr_id=book_id)
     count = (
@@ -111,8 +111,8 @@ def borrow_book(request, book_id,days):
         return JsonResponse({'message': 'You can barrow only 3 books in one row'}, status=400)
 
 def return_book(request, book_id):
-    # user_id = request.user.id
-    user_id = 2
+    user_id = request.user.id
+    # user_id = 2
     user = Utilisateur.objects.get(id=user_id)
     transaction = TransactionEmprunt.objects.filter(utilisateur_id=user_id,livre_id=book_id, dateRetour=None).first()
     if transaction is None:
