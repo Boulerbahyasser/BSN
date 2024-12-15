@@ -7,7 +7,7 @@ class Notification(models.Model):
     type = models.CharField(max_length=50)
     date_envoi = models.DateTimeField(auto_now_add=True)
     attachement = models.CharField(max_length=255, null=True, blank=True, default=None)  # Use None for default
-
+    read_status = models.BooleanField(default=False)
     class Meta:
         db_table = 'notification'
 

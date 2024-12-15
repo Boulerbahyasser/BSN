@@ -14,6 +14,11 @@ def show_all_notifications(request):
         status=200
     )
 
+def change_notification_status(request, notification_id):
+    notification = Notification.objects.get(id=notification_id)
+    notification.read_status = True
+    notification.save()
+    return JsonResponse({"message": "Notification marked as read."}, status=200)
 
 def notify_buyer(user_id,book_title,facture_pdf):
     Notification.objects.create(
