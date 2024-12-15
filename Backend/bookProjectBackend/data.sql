@@ -14,7 +14,7 @@ INSERT INTO "category" (nom) VALUES
 
 -- Insert into Utilisateur (10 users with all required fields for Django User model)
 INSERT INTO "Utilisateur"
-(username, first_name, last_name, email, description, image, telephone, adresse, password, is_active, is_staff, is_superuser, last_login, date_joined, isLinkedToBank)
+(username, first_name, last_name, email, description, image, telephone, adresse, password, is_active, is_staff, is_superuser, last_login, date_joined, "isLinkedToBank")
 VALUES
 ('user1', 'John', 'Doe', 'user1@gamil.com', 'A regular user', null, '0123456789', '123 Main St', 'pbkdf2_sha256$870000$AYGQ3BdJbGNQ8Ktp6Cwb7L$lMFZeZlOR5eFbNQPhItAsCK241lMUHWclVjbfzJdyOM=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00', false),
 ('user2', 'Jane', 'Doe', 'user2@gamil.com', 'Another regular user', null, '0123456790', '456 Side St', 'pbkdf2_sha256$870000$oJpl0GmjsPRx8hzCUf6izj$NuwXehzL+ihEa1H3mJbWdWar8zIrdqUDnQiYrATOHBM=', true, false, false, '2024-12-07 00:00:00', '2024-12-07 00:00:00', false),
@@ -140,18 +140,17 @@ INSERT INTO "favoris" (utilisateur_id, livre_id, date_ajout) VALUES
 (10, 10, NOW());
 
 
-INSERT INTO "notification" (utilisateur_id, contenu, type, date_envoi, attachement) VALUES
-(1, 'You have a new book recommendation!', 'book', NOW(), NULL),
-(2, 'Your favorite book is now available.', 'book', NOW(), NULL),
-(3, 'A new book has been added to your reading list.', 'book', NOW(), NULL),
-(4, 'Dont forget to check out our latest books.', 'book', NOW(), NULL),
-(5, 'Your requested book is now in stock.', 'book', NOW(), NULL),
-(6, 'A book from your wishlist is on sale.', 'book', NOW(), NULL),
-(7, 'New books in your favorite category.', 'book', NOW(), NULL),
-(8, 'Your recommended book is now available for download.', 'book', NOW(), NULL),
-(9, 'Reminder: Your borrowed book is due soon.', 'reminder', NOW(), NULL),
-(10, 'Your book has been successfully rented.', 'transaction', NOW(), NULL);
-
+INSERT INTO "notification" (utilisateur_id, contenu, type, date_envoi, attachement, read_status) VALUES
+(1, 'You have a new book recommendation!', 'book', NOW(), NULL, false),
+(2, 'Your favorite book is now available.', 'book', NOW(), NULL, false),
+(3, 'A new book has been added to your reading list.', 'book', NOW(), NULL, false),
+(4, 'Dont forget to check out our latest books.', 'book', NOW(), NULL, false),
+(5, 'Your requested book is now in stock.', 'book', NOW(), NULL, false),
+(6, 'A book from your wishlist is on sale.', 'book', NOW(), NULL, false),
+(7, 'New books in your favorite category.', 'book', NOW(), NULL, false),
+(8, 'Your recommended book is now available for download.', 'book', NOW(), NULL, false),
+(9, 'Reminder: Your borrowed book is due soon.', 'reminder', NOW(), NULL, false),
+(10, 'Your book has been successfully rented.', 'transaction', NOW(), NULL, false);
 
 
 INSERT INTO "transaction" (utilisateur_id, livre_id, type, date, montant, type_livre) VALUES
