@@ -5,7 +5,7 @@ class Rating(models.Model):
     utilisateur = models.ForeignKey('utilisateur.Utilisateur', on_delete=models.CASCADE, related_name='ratings')
     livre = models.ForeignKey('livre.Livre', on_delete=models.CASCADE, related_name='ratings')
     note = models.IntegerField()
-    commentaire = models.TextField(null=True, blank=True)
+
     date_creation = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -21,7 +21,7 @@ class Rating(models.Model):
             'utilisateur_id': self.utilisateur.id,
             'livre_id': self.livre.id,
             'note': self.note,
-            'commentaire': self.commentaire,
+
             'date_creation': self.date_creation.strftime('%Y-%m-%d %H:%M:%S')
         }
 
