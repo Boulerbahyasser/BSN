@@ -77,17 +77,7 @@ INSERT INTO "livreCategory" (livre_id, category_id) VALUES
 (9, 9), -- Horror
 (10, 10); -- Non-fiction
 
-INSERT INTO "commentaire" (contenu, utilisateur_id, livre_id, note) VALUES
-('Great book!', 1, 1, 5),
-('Interesting read!', 2, 2, 4),
-('Very informative.', 3, 3, 5),
-('Not my cup of tea.', 4, 4, 2),
-('Enjoyed it thoroughly.', 5, 5, 4),
-('Too long for my liking.', 6, 6, 3),
-('A masterpiece!', 7, 7, 5),
-('Could have been better.', 8, 8, 3),
-('Really engaging story.', 9, 9, 4),
-('Highly recommend it.', 10, 10, 5);
+
 
 INSERT INTO "livreCategory" (livre_id, category_id) VALUES
 (1, 1),  -- Book 1 (Fiction)
@@ -101,30 +91,30 @@ INSERT INTO "livreCategory" (livre_id, category_id) VALUES
 (9, 9),  -- Book 9 (Horror)
 (10, 10); -- Book 10 (Non-fiction)
 
-INSERT INTO commentaire (contenu, utilisateur_id, livre_id, note) VALUES
-('Great book, highly recommended!', 1, 1, 5),
-('Interesting read, could be better.', 2, 2, 3),
-('Loved the science fiction elements!', 3, 3, 4),
-('Very informative and well-researched.', 4, 4, 5),
-('A thrilling mystery novel.', 5, 5, 4),
-('Romantic and touching.', 6, 6, 5),
-('An epic fantasy adventure.', 7, 7, 5),
-('A fascinating biography.', 8, 8, 4),
-('Spooky and engaging.', 9, 9, 4),
-('A must-read for nonfiction lovers.', 10, 10, 5);
+INSERT INTO commentaire (contenu, utilisateur_id, livre_id) VALUES
+('Great book, highly recommended!', 1, 1),
+('Interesting read, could be better.', 2, 2),
+('Loved the science fiction elements!', 3, 3),
+('Very informative and well-researched.', 4, 4),
+('A thrilling mystery novel.', 5, 5),
+('Romantic and touching.', 6, 6),
+('An epic fantasy adventure.', 7, 7),
+('A fascinating biography.', 8, 8),
+('Spooky and engaging.', 9, 9),
+('A must-read for nonfiction lovers.', 10, 10);
 
 
-INSERT INTO "rating" (utilisateur_id, livre_id, note, commentaire, date_creation) VALUES
-(1, 1, 5, 'Excellent! Will read again.', NOW()),
-(2, 2, 4, 'Interesting concept, could be longer.', NOW()),
-(3, 3, 4, 'Great book, the science aspect was really good.', NOW()),
-(4, 4, 5, 'A deep dive into history, loved it.', NOW()),
-(5, 5, 4, 'The plot was amazing, kept me on edge.', NOW()),
-(6, 6, 5, 'Such a beautiful love story.', NOW()),
-(7, 7, 5, 'Fantastic world-building and characters.', NOW()),
-(8, 8, 4, 'A biography that made me reflect deeply.', NOW()),
-(9, 9, 4, 'Very creepy, enjoyed it a lot.', NOW()),
-(10, 10, 5, 'Perfect for anyone who loves real stories.', NOW());
+INSERT INTO "rating" (utilisateur_id, livre_id, note, date_creation) VALUES
+(1, 1, 5, NOW()),
+(2, 2, 4, NOW()),
+(3, 3, 4, NOW()),
+(4, 4, 5, NOW()),
+(5, 5, 4, NOW()),
+(6, 6, 5, NOW()),
+(7, 7, 5, NOW()),
+(8, 8, 4, NOW()),
+(9, 9, 4, NOW()),
+(10, 10, 5, NOW());
 
 
 INSERT INTO "favoris" (utilisateur_id, livre_id, date_ajout) VALUES
