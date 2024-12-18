@@ -23,6 +23,7 @@ class Notification(models.Model):
             'type': self.type,
             'date_envoi': self.date_envoi.strftime('%Y-%m-%d %H:%M:%S'),
             'attachement': self.attachement,
+            'read_status': self.read_status,
         }
 
     @classmethod
