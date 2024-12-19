@@ -5,8 +5,8 @@ from notification.models import Notification
 
 
 def show_all_notifications(request):
-    # user_id = request.user.id
-    user_id = 2
+    user_id = request.user.id
+    # user_id = 2
     notifications = Notification.objects.filter(utilisateur_id=user_id)
     return JsonResponse(
         Notification.serialize_to_json(notifications),
@@ -116,7 +116,6 @@ def notify_user_on_book_arrival(user_id, book_titre,stock_type):
     - stock_type (str): The type of stock the book is available in. Can be:
         - 'emprunt': The book is available for borrowing.
         - 'achat' : The book is available for purchase.
-
     """
     if stock_type == 'emprunt':
         stock_message = "disponible pour l'emprunt."

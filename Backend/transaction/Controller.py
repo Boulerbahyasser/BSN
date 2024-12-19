@@ -121,6 +121,8 @@ def return_book(request, book_id):
     transaction.dateRetour = now
     transaction.save()
     book = LivrePhysique.objects.get(livre_ptr_id=book_id)
+    book.empruntes -= 1
+    book.save()
     if now > transaction.dateRetourPrevue:
         livre_taux_amende = LivrePhysique.objects.get(livre_ptr_id=book_id).taux_amende
 
